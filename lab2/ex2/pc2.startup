@@ -1,0 +1,10 @@
+cat << EOF > /etc/network/interfaces.d/eth0
+auto eth0
+allow-hotplug eth0
+iface eth0 inet6 auto
+EOF
+
+ifup eth0
+
+sysctl -w net.ipv6.conf.eth0.use_tempaddr=0
+sysctl -w net.ipv6.conf.eth0.addr_gen_mode=3

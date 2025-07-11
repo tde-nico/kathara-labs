@@ -1,0 +1,10 @@
+cat << EOF > /etc/network/interfaces.d/eth0
+auto eth0
+allow-hotplug eth0
+iface eth0 inet6 static
+	address 2001:DB8:CAFE:2::104
+	netmask 64
+	post-up ip -6 route add default via fe80::1 dev eth0
+EOF
+
+ifup eth0

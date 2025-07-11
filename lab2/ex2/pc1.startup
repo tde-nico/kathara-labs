@@ -1,0 +1,7 @@
+cat << EOF > /etc/network/interfaces.d/eth0
+auto eth0
+allow-hotplug eth0
+iface eth0 inet6 auto
+EOF
+
+ifup eth0

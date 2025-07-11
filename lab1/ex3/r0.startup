@@ -1,0 +1,8 @@
+ip addr replace 172.16.0.1/29 dev eth0
+
+ip route add 172.16.0.8/29 via 172.16.0.2
+ip route add 172.16.0.16/29 via 172.16.0.3
+
+iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+

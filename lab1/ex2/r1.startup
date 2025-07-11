@@ -1,0 +1,24 @@
+ip addr replace 192.168.100.30/29 dev eth0
+iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf
+
+dpkg -i /tmp/*.deb
+apt install -f udhcpd
+
+cp /etc/udhcpd.conf /etc/udhcpd.conf.bak
+
+cat << EOF > /etc/udhcpd.conf
+start           192.168.100.25
+end             192.168.100.29
+interface       eth0
+option  subnet  255.255.255.248
+option  router  192.168.100.30
+option  dns     8.8.8.8
+lease_file      /var/lib/misc/udhcpd.leases
+pidfile         /var/run/udhcpd.pid
+EOF
+
+sed -i 's/^DHCPD_ENABLED=.*/DHCPD_ENABLED="yes"/' /etc/default/udhcpd
+echo 'INTERFACES="eth0"' >> /etc/default/udhcpd
+
+service udhcpd start
